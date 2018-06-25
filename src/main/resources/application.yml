@@ -1,0 +1,32 @@
+facebook:
+    client:
+      clientId: 264850947586076
+      clientSecret: 73ca87ca499c222643d12f990fa60197
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me
+
+github:
+  client:
+    clientId: cd793b7d7ad6fdd15bf8
+    clientSecret: 51c5b30a5b9f0da389de9b844319fa97ec643134
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-alias: tomcat-localhost
+    key-password: changeit
+    key-store: classpath:keystore.jks
+    key-store-provider: SUN
+    key-store-type: JKS
+    key-store-password: changeit
