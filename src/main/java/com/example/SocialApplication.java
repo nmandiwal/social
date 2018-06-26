@@ -52,8 +52,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
-import com.example.data.Employee;
-import com.example.data.EmployeeRepository;
+import com.example.data.User;
+import com.example.data.UserRepository;
 
 @SpringBootApplication
 @EnableOAuth2Client
@@ -61,7 +61,7 @@ import com.example.data.EmployeeRepository;
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    UserRepository employeeRepository;
 
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
@@ -72,19 +72,17 @@ public class SocialApplication extends WebSecurityConfigurerAdapter {
         //HashMap data = (HashMap) ((OAuth2Authentication) a).getUserAuthentication().getDetails()
         HashMap data1 = (HashMap) ((OAuth2Authentication) principal).getUserAuthentication().getDetails();
 
-        System.out.println(data1);
-        Employee employee = new Employee((String) data1.get("name"), (String) data1.get("location"), "description");
-        employeeRepository.save(employee);
-        System.out.println(employeeRepository.findAll());
+        User user = new User(Long.valueOf(data1.get("id").toString()), (String) data1.get("name"));
+        employeeRepository.save(user);
         return principal;
     }
 
-    //    @RequestMapping("/employees")
     @RequestMapping(method = {HEAD, GET}, path = "/employees", produces = {APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<Employee> employees() {
+    public ResponseEntity<List<User>> employees() {
         System.out.println(employeeRepository.findAll());
-        Employee e = employeeRepository.findAll().iterator().next();
-        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).body(e);
+        List<User> list = new ArrayList<>();
+        employeeRepository.findAll().forEach(list::add);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON_UTF8).body(list);
     }
 
     public static void main(String[] args) {
